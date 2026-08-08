@@ -41,7 +41,17 @@ defmodule PokebboWeb.Rooms.Room.Index do
     end
     :ok
   end
+  @impl true
+  def handle_event("send_message", %{"message" => message}, socket) do
+    if message != "" do
 
+    end
+
+    {:noreply,
+     assign(socket,
+       messages: []
+     )}
+  end
   defp build_player(_socket) do
     %Player{
       id: 1234,

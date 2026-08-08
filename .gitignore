@@ -37,3 +37,4 @@ priv/static/avatars/*
 npm-debug.log
 /assets/node_modules/
 
+.vscode
