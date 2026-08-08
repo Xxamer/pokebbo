@@ -8,6 +8,7 @@ defmodule PokebboWeb.Rooms.Room.Index do
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     room_id = String.to_integer(id)
+
     case Registry.room_pid(room_id) do
       nil ->
         {:ok,
@@ -18,6 +19,12 @@ defmodule PokebboWeb.Rooms.Room.Index do
       room_pid ->
         player = build_player(socket)
         room = Room.join(room_pid, player)
+        if connected?(socket) do
+          Phoenix.PubSub.subscribe(
+            Pokebbo.PubSub,
+            "room:#{room_id}"
+          )
+        end
 
         {:ok,
          assign(socket,
@@ -27,6 +34,33 @@ defmodule PokebboWeb.Rooms.Room.Index do
            room: room
          )}
     end
+  end
+
+  @impl true
+  def handle_event("send_message", %{"message" => message}, socket) do
+    message = String.trim(message)
+
+    if message == "" do
+      {:noreply, socket}
+    else
+      Room.send_message(
+        socket.assigns.room_pid,
+        socket.assigns.player,
+        message
+      )
+
+      {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_info({:new_message, message}, socket) do
+    socket =
+      update(socket, :room, fn room ->
+        %{room | messages: room.messages ++ [message]}
+      end)
+
+    {:noreply, socket}
   end
 
   @impl true
@@ -41,17 +75,7 @@ defmodule PokebboWeb.Rooms.Room.Index do
     end
     :ok
   end
-  @impl true
-  def handle_event("send_message", %{"message" => message}, socket) do
-    if message != "" do
 
-    end
-
-    {:noreply,
-     assign(socket,
-       messages: []
-     )}
-  end
   defp build_player(_socket) do
     %Player{
       id: 1234,
