@@ -8,9 +8,13 @@
   <main class="flex-1 flex">
     <!-- Juego -->
     <div class="flex-1 bg-base-300">
-      <div class="p-4">
-        Aquí irá PixiJS
-      </div>
+    <div
+  id="game"
+  phx-update="ignore"
+  phx-hook="RoomGame"
+  class="flex-1 bg-base-300 overflow-hidden"
+>
+</div>
     </div>
     <!-- Chat -->
     <aside class="w-96 flex flex-col border-l border-base-200">

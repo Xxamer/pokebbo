@@ -83,8 +83,8 @@ defmodule PokebboWeb.Rooms.Room.Index do
     %Player{
       id: session["player_id"],
       username: session["player_username"],
-      x: 100,
-      y: 100,
+      x: 140,
+      y: 140,
       direction: :down
     }
   end

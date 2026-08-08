@@ -1,18 +1,79 @@
 # Pokebbo
 
-To start your Phoenix server:
+Pokebbo is a multiplayer virtual-room chat application inspired by
+pixel worlds.
 
-* Run `mix setup` to install and setup dependencies
-* Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+---
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## ✨ Features
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+- Create temporary rooms
+- List active rooms
+- Join and leave rooms
+- Choose a unique username (IN DEVELOPMENT)
+- Store player identity in the session (IN DEVELOPMENT)
+- Real-time chat 
+- Multiplayer room state
+- Pixel-art avatars
+- PixiJS-based game world
+- Player movement
+- Real-time player synchronization
 
-## Learn more
+> Rooms are currently stored in memory and disappear when the server stops.
 
-* Official website: https://www.phoenixframework.org/
-* Guides: https://hexdocs.pm/phoenix/overview.html
-* Docs: https://hexdocs.pm/phoenix
-* Forum: https://elixirforum.com/c/phoenix-forum
-* Source: https://github.com/phoenixframework/phoenix
+---
+
+## 🧱 Tech Stack
+
+### Backend
+
+- Elixir
+- Phoenix
+- Phoenix LiveView
+- GenServer
+- DynamicSupervisor
+- Phoenix.PubSub
+
+### Frontend
+
+- Phoenix LiveView
+- PixiJS
+- Tailwind CSS
+- daisyUI
+
+---
+
+# 🏗 Architecture
+
+The application is divided into two main layers:
+
+```text
+                         ┌──────────────────────┐
+                         │      Browser         │
+                         │                      │
+                         │  LiveView + PixiJS   │
+                         └──────────┬───────────┘
+                                    │
+                           WebSocket / LiveView
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │     Phoenix Web      │
+                         │                      │
+                         │     LiveViews        │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │     Room Registry    │
+                         │                      │
+                         │  DynamicSupervisor   │
+                         └──────────┬───────────┘
+                                    │
+                         ┌──────────┴──────────┐
+                         │                     │
+                         ▼                     ▼
+                  ┌─────────────┐       ┌─────────────┐
+                  │   Room 1    │       │   Room 2    │
+                  │  GenServer  │       │  GenServer  │
+                  └─────────────┘       └─────────────┘
