@@ -18,6 +18,7 @@ defmodule PokebboWeb.Router do
   scope "/", PokebboWeb do
     pipe_through :browser
     get "/", PageController, :home
+    post "/player", PlayerController, :create
   end
 
   scope "/rooms" do

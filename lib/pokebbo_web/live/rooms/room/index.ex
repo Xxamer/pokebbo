@@ -6,7 +6,7 @@ defmodule PokebboWeb.Rooms.Room.Index do
   alias Pokebbo.Rooms.Room.Player
 
   @impl true
-  def mount(%{"id" => id}, _session, socket) do
+  def mount(%{"id" => id}, session, socket) do
     room_id = String.to_integer(id)
 
     case Registry.room_pid(room_id) do
@@ -17,8 +17,10 @@ defmodule PokebboWeb.Rooms.Room.Index do
          |> push_navigate(to: ~p"/rooms")}
 
       room_pid ->
-        player = build_player(socket)
+        player = build_player(session)
+
         room = Room.join(room_pid, player)
+
         if connected?(socket) do
           Phoenix.PubSub.subscribe(
             Pokebbo.PubSub,
@@ -73,13 +75,14 @@ defmodule PokebboWeb.Rooms.Room.Index do
         socket.assigns.player.id
       )
     end
+
     :ok
   end
 
-  defp build_player(_socket) do
+  defp build_player(session) do
     %Player{
-      id: 1234,
-      username: "Not christian",
+      id: session["player_id"],
+      username: session["player_username"],
       x: 100,
       y: 100,
       direction: :down

@@ -1,53 +1,145 @@
 <div class="max-w-5xl mx-auto py-10 px-6">
+  
+<!-- Player -->
+  <%= if @player_username do %>
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold">
+        Rooms
+      </h1>
+
+      <p class="opacity-70">
+        Playing as <strong>{@player_username}</strong>
+      </p>
+    </div>
+  <% else %>
+    <div class="card bg-base-200 shadow-xl mb-8">
+      <div class="card-body">
+        <h1 class="text-2xl font-bold">
+          Choose your name
+        </h1>
+
+        <p class="opacity-70">
+          Choose the name you'll use in the game.
+        </p>
+
+        <form
+          action={~p"/player"}
+          method="post"
+          class="flex gap-4 mt-4"
+        >
+          <input
+            type="hidden"
+            name="_csrf_token"
+            value={Phoenix.Controller.get_csrf_token()}
+          />
+
+          <input
+            type="text"
+            name="username"
+            placeholder="Your name..."
+            maxlength="20"
+            required
+            autocomplete="off"
+            class="input input-bordered flex-1"
+          />
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+          >
+            Continue
+          </button>
+        </form>
+      </div>
+    </div>
+  <% end %>
+  
+<!-- Create room -->
+  <%= if @player_username do %>
+    <div class="card bg-base-200 shadow-xl mb-8">
+      <div class="card-body">
+        <h2 class="text-2xl font-bold">
+          Create a room
+        </h2>
+
+        <form
+          phx-submit="create_room"
+          class="flex gap-4 mt-4"
+        >
+          <input
+            type="text"
+            name="name"
+            placeholder="Room name..."
+            maxlength="30"
+            required
+            autocomplete="off"
+            class="input input-bordered flex-1"
+          />
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+          >
+            Create
+          </button>
+        </form>
+      </div>
+    </div>
+  <% end %>
+  
+<!-- Rooms -->
+
   <div class="card bg-base-200 shadow-xl">
     <div class="card-body">
-      <h1 class="text-3xl font-bold">
-        Poke rooms
-      </h1>
-      <form phx-submit="create_room" class="flex gap-4 mt-6">
-        <input type="text"  name="name" placeholder="Room name..." class="input input-bordered flex-1" />
-
-        <button class="btn btn-primary">
-          Create
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <div class="divider">
-    Active Rooms
-  </div>
-
-  <div class="grid gap-4">
-    <%= if @rooms == [] do %>
-      <div class="alert">
-        <span>No rooms created yet.</span>
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold">
+          Active Rooms
+        </h2>
+        <span class="badge badge-primary">
+          {length(@rooms)}
+        </span>
       </div>
-    <% end %>
 
-    <%= for room <- @rooms do %>
-      <div class="card bg-base-200 shadow">
-        <div class="card-body flex-row items-center justify-between">
-          <div>
-            <h2 class="font-bold text-lg">
-              {room.name}
-            </h2>
+      <div class="divider"></div>
 
-            <p class="text-sm opacity-70">
-              Players: {map_size(room.players)}/10
-            </p>
-          </div>
-          <div class="flex gap-2">
-          <button phx-click="join_room" phx-value-room-id={room.id} class="btn btn-success">
-            Join
-          </button>
-          <%=if map_size(room.players) === 0 do  %>
-            <button class="bg-red-500 btn">Delete</button>
-          <% end %>
-          </div>
-          
+      <%= if @rooms == [] do %>
+        <div class="alert">
+          <span>
+            No rooms available.
+          </span>
         </div>
-      </div>
-    <% end %>
+      <% else %>
+        <div class="grid gap-4">
+          <%= for room <- @rooms do %>
+            <div class="card bg-base-300">
+              <div class="card-body flex-row items-center justify-between">
+                <div>
+                  <h3 class="font-bold text-lg">
+                    {room.name}
+                  </h3>
+
+                  <p class="text-sm opacity-70">
+                    {map_size(room.players)} players
+                  </p>
+                </div>
+
+                <%= if @player_username do %>
+                  <.link
+                    navigate={~p"/rooms/#{room.id}"}
+                    class="btn btn-success"
+                  >
+                    Join
+                  </.link>
+                <% else %>
+                  <span class="text-sm opacity-50">
+                    Choose a name first
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
