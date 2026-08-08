@@ -1,0 +1,53 @@
+<div class="max-w-5xl mx-auto py-10 px-6">
+  <div class="card bg-base-200 shadow-xl">
+    <div class="card-body">
+      <h1 class="text-3xl font-bold">
+        Poke rooms
+      </h1>
+      <form phx-submit="create_room" class="flex gap-4 mt-6">
+        <input type="text"  name="name" placeholder="Room name..." class="input input-bordered flex-1" />
+
+        <button class="btn btn-primary">
+          Create
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="divider">
+    Active Rooms
+  </div>
+
+  <div class="grid gap-4">
+    <%= if @rooms == [] do %>
+      <div class="alert">
+        <span>No rooms created yet.</span>
+      </div>
+    <% end %>
+
+    <%= for room <- @rooms do %>
+      <div class="card bg-base-200 shadow">
+        <div class="card-body flex-row items-center justify-between">
+          <div>
+            <h2 class="font-bold text-lg">
+              {room.name}
+            </h2>
+
+            <p class="text-sm opacity-70">
+              Players: {map_size(room.players)}/10
+            </p>
+          </div>
+          <div class="flex gap-2">
+          <button phx-click="join_room" phx-value-room-id={room.id} class="btn btn-success">
+            Join
+          </button>
+          <%=if map_size(room.players) === 0 do  %>
+            <button class="bg-red-500 btn">Delete</button>
+          <% end %>
+          </div>
+          
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
