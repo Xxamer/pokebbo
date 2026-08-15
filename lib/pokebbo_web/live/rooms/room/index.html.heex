@@ -6,16 +6,16 @@
   </header>
 
   <main class="flex-1 flex">
-    <!-- Juego -->
     <div class="flex-1 bg-base-300">
-    <div
-  id="game"
-  phx-update="ignore"
-  phx-hook="RoomGame"
-  class="flex-1 bg-base-300 overflow-hidden"
->
-</div>
+      <div
+        id="game"
+        phx-update="ignore"
+        phx-hook="RoomGame"
+        class="flex-1 bg-base-300 overflow-hidden"
+      >
+      </div>
     </div>
+    <!-- TODO: integrate chat with float messages -->
     <!-- Chat -->
     <aside class="w-96 flex flex-col border-l border-base-200">
       <div class="p-4 font-bold border-b">
@@ -27,7 +27,6 @@
             <span class="font-bold">
               {message.username}:
             </span>
-
             <span>
               {message.content}
             </span>

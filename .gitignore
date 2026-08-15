@@ -32,9 +32,10 @@ pokebbo-*.tar
 # Ignore digested assets cache.
 /priv/static/cache_manifest.json
 # Images and *you know what*
-priv/static/avatars/*
-priv/static/backgrounds/*
+# priv/static/avatars/*
+# priv/static/backgrounds/*
 # In case you use Node.js/npm, you want to ignore these.
+.vscode
 npm-debug.log
 /assets/node_modules/
 .node_modules
