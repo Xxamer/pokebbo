@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "timestamp": 1786024079678,
+  "timestamp": 1786814781314,
   "workspaceRoot": "/Users/christian/workspace/pokebbo",
   "registries": {
     "components": {
@@ -666,10 +666,6 @@
           []
         ],
         [
-          "/Users/christian/workspace/pokebbo/lib/pokebbo_web/live/rooms/index.ex",
-          []
-        ],
-        [
           "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/page_html.ex",
           []
         ]
@@ -678,132 +674,90 @@
         "/Users/christian/workspace/pokebbo/lib/pokebbo_web/components/core_components.ex": "94b37a4acba8583e2390c8ac98413212ab893aa7",
         "/Users/christian/workspace/pokebbo/lib/pokebbo_web/components/layouts.ex": "dcaa109b8af26c841f385ad2f28d12d94055be38",
         "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/error_html.ex": "9f9f18cad0ac5204b128142bace72aa53ebacb17",
-        "/Users/christian/workspace/pokebbo/lib/pokebbo_web/live/rooms/index.ex": "7130855daccd91d888dfbe051f1aaa1412d792ed",
         "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/page_html.ex": "b3c50337cb3e76601c30131ab2c61330f6535409"
       },
       "workspaceRoot": "/Users/christian/workspace/pokebbo"
     },
     "schemas": {
-      "schemas": [
-        [
-          "Pokebbo.Rooms.Room",
-          {
-            "moduleName": "Pokebbo.Rooms.Room",
-            "tableName": "rooms",
-            "fields": [
-              {
-                "name": "name",
-                "type": "string"
-              },
-              {
-                "name": "uuid",
-                "type": "string"
-              },
-              {
-                "name": "inserted_at",
-                "type": "naive_datetime"
-              },
-              {
-                "name": "updated_at",
-                "type": "naive_datetime"
-              },
-              {
-                "name": "id",
-                "type": "id"
-              }
-            ],
-            "associations": {},
-            "associationsDetailed": [],
-            "aliases": {},
-            "filePath": "/Users/christian/workspace/pokebbo/lib/pokebbo/rooms/room.ex",
-            "line": 5
-          }
-        ]
-      ],
-      "schemasByFile": [
-        [
-          "/Users/christian/workspace/pokebbo/lib/pokebbo/rooms/room.ex",
-          [
-            {
-              "moduleName": "Pokebbo.Rooms.Room",
-              "tableName": "rooms",
-              "fields": [
-                {
-                  "name": "name",
-                  "type": "string"
-                },
-                {
-                  "name": "uuid",
-                  "type": "string"
-                },
-                {
-                  "name": "inserted_at",
-                  "type": "naive_datetime"
-                },
-                {
-                  "name": "updated_at",
-                  "type": "naive_datetime"
-                },
-                {
-                  "name": "id",
-                  "type": "id"
-                }
-              ],
-              "associations": {},
-              "associationsDetailed": [],
-              "aliases": {},
-              "filePath": "/Users/christian/workspace/pokebbo/lib/pokebbo/rooms/room.ex",
-              "line": 5
-            }
-          ]
-        ]
-      ],
-      "fileHashes": {
-        "/Users/christian/workspace/pokebbo/lib/pokebbo/rooms/room.ex": "55dd9707527ec3b59cd0d7c4fffc3177a92b34bc"
-      },
+      "schemas": [],
+      "schemasByFile": [],
+      "fileHashes": {},
       "workspaceRoot": "/Users/christian/workspace/pokebbo"
     },
     "events": {
-      "events": [
-        [
-          "/Users/christian/workspace/pokebbo/lib/pokebbo_web/live/rooms/index.ex",
-          []
-        ]
-      ],
-      "fileHashes": {
-        "/Users/christian/workspace/pokebbo/lib/pokebbo_web/live/rooms/index.ex": "7130855daccd91d888dfbe051f1aaa1412d792ed"
-      },
+      "events": [],
+      "fileHashes": {},
       "workspaceRoot": "/Users/christian/workspace/pokebbo"
     },
     "routes": {
       "routes": [
         {
-          "path": "/rooms/",
-          "verb": "LIVE",
-          "filePath": "/Users/christian/workspace/pokebbo/lib/pokebbo_web/router.ex",
-          "line": 25,
-          "helperBase": "rooms",
-          "params": [],
-          "isResource": false,
-          "liveModule": "Rooms.Index",
-          "liveAction": "index",
-          "scopePath": "/rooms"
-        },
-        {
-          "path": "/",
           "verb": "GET",
+          "path": "/",
           "filePath": "/Users/christian/workspace/pokebbo/lib/pokebbo_web/router.ex",
           "line": 20,
+          "controller": "PageController",
+          "action": "home",
           "helperBase": "root",
           "params": [],
           "isResource": false,
-          "controller": "PageController",
-          "action": "home",
-          "scopePath": "/"
+          "pipeline": "browser"
+        },
+        {
+          "verb": "POST",
+          "path": "/player",
+          "filePath": "/Users/christian/workspace/pokebbo/lib/pokebbo_web/router.ex",
+          "line": 21,
+          "controller": "PlayerController",
+          "action": "create",
+          "helperBase": "player",
+          "params": [],
+          "isResource": false,
+          "pipeline": "browser"
+        },
+        {
+          "verb": "LIVE",
+          "path": "/rooms/",
+          "filePath": "/Users/christian/workspace/pokebbo/lib/pokebbo_web/router.ex",
+          "line": 26,
+          "liveModule": "Rooms.Index",
+          "liveAction": "Index",
+          "helperBase": "root",
+          "params": [],
+          "isResource": false,
+          "pipeline": "browser",
+          "scopePath": "/rooms"
+        },
+        {
+          "verb": "LIVE",
+          "path": "/rooms/:id",
+          "filePath": "/Users/christian/workspace/pokebbo/lib/pokebbo_web/router.ex",
+          "line": 27,
+          "liveModule": "Rooms.Room.Index",
+          "liveAction": "Index",
+          "helperBase": "root",
+          "params": [
+            "id"
+          ],
+          "isResource": false,
+          "pipeline": "browser",
+          "scopePath": "/rooms"
+        },
+        {
+          "verb": "FORWARD",
+          "path": "/dev/mailbox",
+          "filePath": "/Users/christian/workspace/pokebbo/lib/pokebbo_web/router.ex",
+          "line": 37,
+          "forwardTo": "Plug.Swoosh.MailboxPreview",
+          "helperBase": "mailbox",
+          "params": [],
+          "isResource": false,
+          "pipeline": "browser",
+          "scopePath": "/dev"
         }
       ],
       "fileHashes": {
-        "/Users/christian/workspace/pokebbo/lib/pokebbo_web/router.ex": "c1836cb5ecd69158b82dd69f9e5538cac93650cb"
+        "/Users/christian/workspace/pokebbo/lib/pokebbo_web/router.ex": "daa82bb56acc2551e39cb53fc2763d9f62bcd28e"
       },
       "workspaceRoot": "/Users/christian/workspace/pokebbo"
     },
@@ -819,10 +773,15 @@
               "templateName": "home",
               "assigns": [],
               "assignsWithTypes": [],
+              "actionBody": "  def home(conn, _params) do\n    render(conn, :home)\n  end",
               "line": 5,
               "templatePath": "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/page_html/home.html.heex"
             }
           ]
+        ],
+        [
+          "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/player_controller.ex",
+          []
         ]
       ],
       "templateSummaries": [
@@ -839,6 +798,7 @@
                 "templateName": "home",
                 "assigns": [],
                 "assignsWithTypes": [],
+                "actionBody": "  def home(conn, _params) do\n    render(conn, :home)\n  end",
                 "line": 5,
                 "templatePath": "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/page_html/home.html.heex"
               }
@@ -847,7 +807,8 @@
         ]
       ],
       "fileHashes": {
-        "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/page_controller.ex": "156be1de60c91483e1157bce0e9a55b8467a41ad"
+        "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/page_controller.ex": "156be1de60c91483e1157bce0e9a55b8467a41ad",
+        "/Users/christian/workspace/pokebbo/lib/pokebbo_web/controllers/player_controller.ex": "c883bdf5aabb34e9b516a595a0be4d1dec819000"
       },
       "workspaceRoot": "/Users/christian/workspace/pokebbo"
     },
