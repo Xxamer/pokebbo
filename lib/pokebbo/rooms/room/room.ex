@@ -1,8 +1,6 @@
 defmodule Pokebbo.Rooms.Room do
   use GenServer
-
   alias Pokebbo.Rooms.Room.Chat
-
   ## Client
 
   def start_link(room) do
@@ -17,12 +15,12 @@ defmodule Pokebbo.Rooms.Room do
     GenServer.call(pid, {:join, player})
   end
 
-  def leave(pid, player_id) do
-    GenServer.call(pid, {:leave, player_id})
+  def send_message(pid, player, message) do
+    GenServer.call(pid, {:send_message, player, message})
   end
 
-  def send_message(pid, player, content) do
-    GenServer.call(pid, {:send_message, player, content})
+  def leave(pid, player_id) do
+    GenServer.call(pid, {:leave, player_id})
   end
 
   ## Server
@@ -48,7 +46,12 @@ defmodule Pokebbo.Rooms.Room do
         Map.put(players, player.id, player)
       end)
 
-    {:reply, new_state, new_state}
+    broadcast(
+      state.id,
+      {:player_joined, player}
+    )
+
+    {:reply, :ok, new_state}
   end
 
   @impl true
@@ -58,10 +61,14 @@ defmodule Pokebbo.Rooms.Room do
         Map.delete(players, player_id)
       end)
 
-    {:reply, new_state, new_state}
+    broadcast(
+      state.id,
+      {:player_left, player_id}
+    )
+
+    {:reply, :ok, new_state}
   end
 
-  @impl true
   def handle_call({:send_message, player, content}, _from, state) do
     message = Chat.new_message(player, content)
 
@@ -69,13 +76,20 @@ defmodule Pokebbo.Rooms.Room do
       update_in(state.messages, fn messages ->
         messages ++ [message]
       end)
-
     Phoenix.PubSub.broadcast(
       Pokebbo.PubSub,
       "room:#{state.id}",
       {:new_message, message}
     )
-
     {:reply, new_state, new_state}
+  end
+
+  ## Private
+  defp broadcast(room_id, message) do
+    Phoenix.PubSub.broadcast(
+      Pokebbo.PubSub,
+      "room:#{room_id}",
+      message
+    )
   end
 end
