@@ -35,6 +35,7 @@ pokebbo-*.tar
 # # priv/static/avatars/*
 # priv/static/backgrounds/*
 # In case you use Node.js/npm, you want to ignore these.
+.vscode
 npm-debug.log
 /assets/node_modules/
 .node_modules
