@@ -6,14 +6,14 @@
   </header>
 
   <main class="flex-1 flex">
-    <div class="flex-1 bg-base-300">
-      <div
-        id="game"
-        phx-update="ignore"
-        phx-hook="RoomGame"
-        class="flex-1 bg-base-300 overflow-hidden"
-      >
-      </div>
+    <div
+      id="game"
+      phx-hook="RoomGame"
+      phx-update="ignore"
+      data-player-id={@player.id}
+      data-username={@player.username}
+      class="flex-1 bg-base-300 overflow-hidden"
+    >
     </div>
     <!-- TODO: integrate chat with float messages -->
     <!-- Chat -->
