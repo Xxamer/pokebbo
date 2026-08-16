@@ -1,11 +1,9 @@
 defmodule PokebboWeb.Rooms.Room.Index do
   use PokebboWeb, :live_view
-
   alias Pokebbo.Rooms.Registry
   alias Pokebbo.Rooms.Room
   alias Pokebbo.Rooms.Room.Player
 
-  @impl true
   @impl true
   def mount(%{"id" => id}, session, socket) do
     room_id = String.to_integer(id)
@@ -97,7 +95,6 @@ defmodule PokebboWeb.Rooms.Room.Index do
   # ==================================================
   # Player left
   # ==================================================
-
   @impl true
   def handle_info(
         {:player_left, player_id},
@@ -112,11 +109,9 @@ defmodule PokebboWeb.Rooms.Room.Index do
        }
      )}
   end
-
   # ==================================================
   # New message
   # ==================================================
-
   @impl true
   def handle_info(
         {:new_message, message},
@@ -132,11 +127,9 @@ defmodule PokebboWeb.Rooms.Room.Index do
        )
      end)}
   end
-
   # ==================================================
   # Send message
   # ==================================================
-
   @impl true
   def handle_event(
         "send_message",
@@ -153,16 +146,14 @@ defmodule PokebboWeb.Rooms.Room.Index do
         socket.assigns.player,
         message
       )
-
       {:noreply, socket}
     end
   end
-
   # ==================================================
   # Player movement
   # ==================================================
-
   @impl true
+  # This handler is used in js
   def handle_event(
         "player_move",
         %{
@@ -175,7 +166,6 @@ defmodule PokebboWeb.Rooms.Room.Index do
     x = parse_number(x)
     y = parse_number(y)
     direction = parse_direction(direction)
-
     Room.move_player(
       socket.assigns.room_pid,
       socket.assigns.player.id,
@@ -183,14 +173,11 @@ defmodule PokebboWeb.Rooms.Room.Index do
       y,
       direction
     )
-
     {:noreply, socket}
   end
-
   # ==================================================
   # Terminate
   # ==================================================
-
   @impl true
   def terminate(_reason, socket) do
     if connected?(socket) &&
@@ -211,7 +198,6 @@ defmodule PokebboWeb.Rooms.Room.Index do
   @impl true
   def handle_event("request_initial_players", _params, socket) do
     room = Room.state(socket.assigns.room_pid)
-
     players =
       room.players
       |> Map.values()
@@ -227,34 +213,24 @@ defmodule PokebboWeb.Rooms.Room.Index do
           direction: player.direction
         }
       end)
-
     {:noreply,
      push_event(socket, "initial_players", %{
        players: players
      })}
-  end
-
-  # ==================================================
-  # Private
-  # ==================================================
+end
 
   defp build_player(session) do
     %Player{
       id: session["player_id"],
       username: session["player_username"],
-      x: 100,
-      y: 100,
+      x: 300,
+      y: 300,
       direction: :down
     }
   end
 
-  # ==================================================
-  # Parse number
-  # ==================================================
-
   defp parse_number(value) when is_integer(value), do: value
   defp parse_number(value) when is_float(value), do: value
-
   defp parse_number(value) when is_binary(value) do
     case Float.parse(value) do
       {number, _} ->
@@ -264,10 +240,6 @@ defmodule PokebboWeb.Rooms.Room.Index do
         0
     end
   end
-
-  # ==================================================
-  # Parse direction
-  # ==================================================
 
   defp parse_direction("down"), do: :down
   defp parse_direction("down-right"), do: :"down-right"
